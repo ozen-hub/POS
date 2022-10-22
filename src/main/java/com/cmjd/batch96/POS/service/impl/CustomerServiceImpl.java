@@ -53,7 +53,23 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDto getCustomer(String id) {
-        return null;
+        Optional<Customer> customerData = repo.findById(id);
+       /* return customerData.map(customer -> new CustomerDto(
+                customer.getId(),
+                customer.getName(),
+                customer.getAddress(),
+                customer.getSalary()
+        )).orElse(null);*/
+        if (customerData.isPresent()){
+            return new CustomerDto(
+                    customerData.get().getId(),
+                    customerData.get().getName(),
+                    customerData.get().getAddress(),
+                    customerData.get().getSalary()
+            );
+        }else{
+            return null;
+        }
     }
 
     @Override

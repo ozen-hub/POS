@@ -27,8 +27,9 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public String getCustomer(@PathVariable String id) {
-        return "get customer : "+id;
+    public CustomerDto getCustomer(@PathVariable String id) {
+        return customerService.getCustomer(id);
+
     }
 
     @GetMapping("/list")
