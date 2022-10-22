@@ -41,7 +41,14 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public String deleteCustomer(String id) {
-        return null;
+        Optional<Customer> tempCustomer = repo.findById(id);
+        if (tempCustomer.isPresent()){
+            repo.delete(tempCustomer.get());
+            return id+" Deleted!";
+        }else{
+            return "Cant Find!";
+        }
+
     }
 
     @Override
