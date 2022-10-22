@@ -5,6 +5,8 @@ import com.cmjd.batch96.POS.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping("api/v1/customer")
 public class CustomerController {
@@ -33,10 +35,10 @@ public class CustomerController {
     }
 
     @GetMapping("/list")
-    public String getAllCustomers(
+    public ArrayList<CustomerDto> getAllCustomers(
             @RequestParam int page,
             @RequestParam int size,
             @RequestParam String searchText) {
-        return "get All Customers Page : "+page+" : size = "+size+" Search Text : "+searchText;
+        return customerService.getAllCustomers(page, size, searchText);
     }
 }

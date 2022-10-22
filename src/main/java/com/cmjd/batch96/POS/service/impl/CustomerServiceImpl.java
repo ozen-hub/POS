@@ -7,6 +7,7 @@ import com.cmjd.batch96.POS.service.CustomerService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -74,6 +75,14 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public ArrayList<CustomerDto> getAllCustomers(int size, int page, String searchText) {
-        return null;
+        List<Customer> all = repo.findAll();
+        ArrayList<CustomerDto> dtos= new ArrayList<>();
+        for (Customer c:all
+             ) {
+            dtos.add(new CustomerDto(
+                    c.getId(),c.getName(),c.getAddress(),c.getSalary()
+            ));
+        }
+        return dtos;
     }
 }
