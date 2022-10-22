@@ -1,9 +1,14 @@
 package com.cmjd.batch96.POS.service.impl;
 
 import com.cmjd.batch96.POS.dto.CustomerDto;
+import com.cmjd.batch96.POS.dto.paginated.PaginatedCustomerResponseDTO;
 import com.cmjd.batch96.POS.entity.Customer;
 import com.cmjd.batch96.POS.repo.CustomerRepo;
 import com.cmjd.batch96.POS.service.CustomerService;
+import com.cmjd.batch96.POS.util.mapper.CustomerMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,6 +20,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     //@Autowired
     private final CustomerRepo repo;
+    @Autowired
+    private CustomerMapper customerMapper;
 
 
     public CustomerServiceImpl(CustomerRepo repo) {
@@ -75,15 +82,14 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public ArrayList<CustomerDto> getAllCustomers(int size, int page, String searchText) {
-        List<Customer> all = repo.findAll();
-        ArrayList<CustomerDto> dtos= new ArrayList<>();
-        for (Customer c:all
-             ) {
-            dtos.add(new CustomerDto(
-                    c.getId(),c.getName(),c.getAddress(),c.getSalary()
-            ));
-        }
-        return dtos;
+    public PaginatedCustomerResponseDTO getAllCustomers(int size, int page, String searchText) {
+
+        String s=searchText;
+        Page<Customer> list = repo.getAll(searchText, PageRequest.of(page, size));
+
+        return new PaginatedCustomerResponseDTO(
+                customerMapper.toCustomerDtoList(list),
+                20
+        );
     }
 }

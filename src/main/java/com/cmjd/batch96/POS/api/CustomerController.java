@@ -1,6 +1,7 @@
 package com.cmjd.batch96.POS.api;
 
 import com.cmjd.batch96.POS.dto.CustomerDto;
+import com.cmjd.batch96.POS.dto.paginated.PaginatedCustomerResponseDTO;
 import com.cmjd.batch96.POS.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class CustomerController {
     }
 
     @GetMapping("/list")
-    public ArrayList<CustomerDto> getAllCustomers(
+    public PaginatedCustomerResponseDTO getAllCustomers(
             @RequestParam int page,
             @RequestParam int size,
             @RequestParam String searchText) {
