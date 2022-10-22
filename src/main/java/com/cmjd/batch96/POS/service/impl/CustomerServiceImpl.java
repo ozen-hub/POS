@@ -4,8 +4,6 @@ import com.cmjd.batch96.POS.dto.CustomerDto;
 import com.cmjd.batch96.POS.entity.Customer;
 import com.cmjd.batch96.POS.repo.CustomerRepo;
 import com.cmjd.batch96.POS.service.CustomerService;
-import com.cmjd.batch96.POS.util.mapper.CustomerMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,8 +16,6 @@ public class CustomerServiceImpl implements CustomerService {
     //@Autowired
     private final CustomerRepo repo;
 
-    @Autowired
-    private CustomerMapper customerMapper;
 
     public CustomerServiceImpl(CustomerRepo repo) {
         this.repo = repo;
@@ -27,10 +23,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public String saveCustomer(CustomerDto dto) {
-        System.out.println(dto);
-        Customer c = customerMapper.toCustomer(dto);
-        System.out.println(c.getName());
-        return repo.save(c).getName();
+        return
+                repo.save(new Customer(dto.getId(),dto.getName(),dto.getAddress(),dto.getSalary()))
+                        .getName(); // save ==> return saved Customer name
     }
 
     @Override
@@ -68,7 +63,12 @@ public class CustomerServiceImpl implements CustomerService {
                 customer.getSalary()
         )).orElse(null);*/
         if (customerData.isPresent()){
-            return customerMapper.toCustomerDto(customerData.get());
+            return new CustomerDto(
+                    customerData.get().getId(),
+                    customerData.get().getName(),
+                    customerData.get().getAddress(),
+                    customerData.get().getSalary()
+            );
         }else{
             return null;
         }
@@ -80,7 +80,9 @@ public class CustomerServiceImpl implements CustomerService {
         ArrayList<CustomerDto> dtos= new ArrayList<>();
         for (Customer c:all
              ) {
-            dtos.add(customerMapper.toCustomerDto(c));
+            dtos.add(new CustomerDto(
+                    c.getId(),c.getName(),c.getAddress(),c.getSalary()
+            ));
         }
         return dtos;
     }
