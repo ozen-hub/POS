@@ -7,6 +7,8 @@ import com.cmjd.batch96.POS.service.CustomerService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
+
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
@@ -26,7 +28,15 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public String updateCustomer(CustomerDto dto) {
-        return null;
+        Optional<Customer> tempCustomer =
+                repo.findById(dto.getId());
+        if (tempCustomer.isPresent()){
+            tempCustomer.get().setName(dto.getName());
+            tempCustomer.get().setAddress(dto.getAddress());
+            tempCustomer.get().setSalary(dto.getSalary());
+            return repo.save(tempCustomer.get()).getName();
+        }
+        return "Customer Not Found";
     }
 
     @Override

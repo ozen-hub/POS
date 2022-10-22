@@ -12,27 +12,25 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    // POST ==>(body)
     @PostMapping
     public String saveCustomer(@RequestBody CustomerDto dto) {
-        return customerService.saveCustomer(dto);
+        return customerService.saveCustomer(dto)+" saved!";
     }
-    // PUT ==>(body)
     @PutMapping
     public String updateCustomer(@RequestBody CustomerDto dto) {
-        return dto.toString();
+        return customerService.updateCustomer(dto)+" Updated!";
     }
-    // DELETE ==>(headers)
+
     @DeleteMapping
     public String deleteCustomer(@RequestParam String id) {
         return "delete customer : "+id;
     }
-    // GET ==>(headers)
+
     @GetMapping("/{id}")
     public String getCustomer(@PathVariable String id) {
         return "get customer : "+id;
     }
-    // GET ==>(headers)
+
     @GetMapping("/list")
     public String getAllCustomers(
             @RequestParam int page,
