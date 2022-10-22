@@ -5,6 +5,7 @@ import com.cmjd.batch96.POS.entity.Customer;
 import com.cmjd.batch96.POS.repo.CustomerRepo;
 import com.cmjd.batch96.POS.service.CustomerService;
 import com.cmjd.batch96.POS.util.mapper.CustomerMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,18 +18,19 @@ public class CustomerServiceImpl implements CustomerService {
     //@Autowired
     private final CustomerRepo repo;
 
+    @Autowired
     private CustomerMapper customerMapper;
 
-    public CustomerServiceImpl(CustomerRepo repo,
-        CustomerMapper customerMapper) {
+    public CustomerServiceImpl(CustomerRepo repo) {
         this.repo = repo;
-        this.customerMapper = customerMapper;
     }
 
     @Override
     public String saveCustomer(CustomerDto dto) {
-        return
-                repo.save(customerMapper.toCustomer(dto)).getName();
+        System.out.println(dto);
+        Customer c = customerMapper.toCustomer(dto);
+        System.out.println(c.getName());
+        return repo.save(c).getName();
     }
 
     @Override
