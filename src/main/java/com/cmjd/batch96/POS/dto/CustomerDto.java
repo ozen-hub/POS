@@ -2,10 +2,10 @@ package com.cmjd.batch96.POS.dto;
 
 import lombok.*;
 
-//@Getter
-//@Setter
+@Getter
+@Setter
 @AllArgsConstructor
-//@NoArgsConstructor
+@NoArgsConstructor
 @Data
 public class CustomerDto {
     private String id;

@@ -4,6 +4,7 @@ import com.cmjd.batch96.POS.dto.CustomerDto;
 import com.cmjd.batch96.POS.entity.Customer;
 import com.cmjd.batch96.POS.repo.CustomerRepo;
 import com.cmjd.batch96.POS.service.CustomerService;
+import com.cmjd.batch96.POS.util.mapper.CustomerMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,15 +17,18 @@ public class CustomerServiceImpl implements CustomerService {
     //@Autowired
     private final CustomerRepo repo;
 
-    public CustomerServiceImpl(CustomerRepo repo) {
+    private CustomerMapper customerMapper;
+
+    public CustomerServiceImpl(CustomerRepo repo,
+        CustomerMapper customerMapper) {
         this.repo = repo;
+        this.customerMapper = customerMapper;
     }
 
     @Override
     public String saveCustomer(CustomerDto dto) {
         return
-                repo.save(new Customer(dto.getId(),dto.getName(),dto.getAddress(),dto.getSalary()))
-                        .getName(); // save ==> return saved Customer name
+                repo.save(customerMapper.toCustomer(dto)).getName();
     }
 
     @Override
@@ -62,12 +66,7 @@ public class CustomerServiceImpl implements CustomerService {
                 customer.getSalary()
         )).orElse(null);*/
         if (customerData.isPresent()){
-            return new CustomerDto(
-                    customerData.get().getId(),
-                    customerData.get().getName(),
-                    customerData.get().getAddress(),
-                    customerData.get().getSalary()
-            );
+            return customerMapper.toCustomerDto(customerData.get());
         }else{
             return null;
         }
@@ -79,9 +78,7 @@ public class CustomerServiceImpl implements CustomerService {
         ArrayList<CustomerDto> dtos= new ArrayList<>();
         for (Customer c:all
              ) {
-            dtos.add(new CustomerDto(
-                    c.getId(),c.getName(),c.getAddress(),c.getSalary()
-            ));
+            dtos.add(customerMapper.toCustomerDto(c));
         }
         return dtos;
     }
