@@ -40,9 +40,11 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public CustomerDto getCustomer(@PathVariable String id) {
-        return customerService.getCustomer(id);
-
+    public ResponseEntity<StandardResponse> getCustomer(@PathVariable String id) {
+        return new ResponseEntity<>(new StandardResponse(
+                200,"Customer Data",
+                customerService.getCustomer(id)), HttpStatus.OK
+        );
     }
 
     @GetMapping("/list")

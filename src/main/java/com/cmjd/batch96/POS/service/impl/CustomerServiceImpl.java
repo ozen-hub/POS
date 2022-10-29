@@ -72,7 +72,12 @@ public class CustomerServiceImpl implements CustomerService {
                 customer.getSalary()
         )).orElse(null);*/
         if (customerData.isPresent()){
-            return customerMapper.toCustomerDto(customerData.get());
+            return new CustomerDto(
+                    customerData.get().getId(),
+                    customerData.get().getName(),
+                    customerData.get().getAddress(),
+                    customerData.get().getSalary()
+            );
         }else{
             return null;
         }
