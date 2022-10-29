@@ -31,8 +31,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public String saveCustomer(CustomerDto dto) {
         return
-                repo.save(new Customer(dto.getId(),dto.getName(),dto.getAddress(),dto.getSalary()))
-                        .getName(); // save ==> return saved Customer name
+                repo.save(customerMapper.toCustomer(dto)).getName(); // save ==> return saved Customer name
     }
 
     @Override
@@ -70,12 +69,7 @@ public class CustomerServiceImpl implements CustomerService {
                 customer.getSalary()
         )).orElse(null);*/
         if (customerData.isPresent()){
-            return new CustomerDto(
-                    customerData.get().getId(),
-                    customerData.get().getName(),
-                    customerData.get().getAddress(),
-                    customerData.get().getSalary()
-            );
+            return customerMapper.toCustomerDto(customerData.get());
         }else{
             return null;
         }
