@@ -11,6 +11,6 @@ public interface CustomerService {
     String deleteCustomer(String id);
     CustomerDto getCustomer(String id);
     PaginatedCustomerResponseDTO getAllCustomers(
-            int size, int page, String searchText
+            int page, int size, String searchText
     );
 }

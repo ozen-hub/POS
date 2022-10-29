@@ -9,14 +9,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @EnableJpaRepositories
 public interface CustomerRepo extends JpaRepository<Customer,String> {
-    @Query(value = "SELECT * FROM Customer WHERE name LIKE ?1%",
+    @Query(value = "SELECT * FROM Customer WHERE name LIKE %?1%",
             nativeQuery = true)
-    Page<Customer> getAll(String searchText, PageRequest of);
+    Page<Customer> getAll(String searchText, Pageable of);
 
-    @Query(value = "SELECT COUNT(*) FROM Customer WHERE name LIKE ?1%",
+    @Query(value = "SELECT COUNT(id) FROM Customer WHERE name LIKE %?1%",
             nativeQuery = true)
     Long getAllCount(String searchText);
 }
