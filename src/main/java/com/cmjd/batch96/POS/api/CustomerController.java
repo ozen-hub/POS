@@ -27,8 +27,11 @@ public class CustomerController {
         );
     }
     @PutMapping
-    public String updateCustomer(@RequestBody CustomerDto dto) {
-        return customerService.updateCustomer(dto)+" Updated!";
+    public ResponseEntity<StandardResponse> updateCustomer(@RequestBody CustomerDto dto) {
+        return new ResponseEntity<>(new StandardResponse(
+                201,customerService.updateCustomer(dto)+" Updated!",
+                customerService.updateCustomer(dto)), HttpStatus.CREATED
+        );
     }
 
     @DeleteMapping
