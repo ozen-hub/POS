@@ -51,10 +51,13 @@ public class CustomerController {
     }
 
     @GetMapping("/list")
-    public PaginatedCustomerResponseDTO getAllCustomers(
+    public ResponseEntity<StandardResponse> getAllCustomers(
             @RequestParam int page,
             @RequestParam int size,
             @RequestParam String searchText) {
-        return customerService.getAllCustomers(page, size, searchText);
+        return new ResponseEntity<>(new StandardResponse(
+                200,"List",
+                customerService.getAllCustomers(page, size, searchText)), HttpStatus.OK
+        );
     }
 }

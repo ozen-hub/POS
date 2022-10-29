@@ -85,9 +85,17 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public PaginatedCustomerResponseDTO getAllCustomers(int page, int size, String searchText) {
-        return new PaginatedCustomerResponseDTO(
-                customerMapper.toCustomerDtoList(repo.getAll(searchText, PageRequest.of(page, size))),
-                repo.getAllCount(searchText)
-        );
+
+        List<Customer> list = repo.findAll();
+        ArrayList<CustomerDto> dtoList = new ArrayList<>();
+        for (Customer c:list
+             ) {
+            dtoList.add(new CustomerDto(c.getId(),c.getName(),c.getAddress(),c.getSalary()));
+        }
+        return new PaginatedCustomerResponseDTO(dtoList, list.size());
+        //        return new PaginatedCustomerResponseDTO(
+//                customerMapper.toCustomerDtoList(repo.getAll(searchText, PageRequest.of(page, size))),
+//                repo.getAllCount(searchText)
+//        );
     }
 }
